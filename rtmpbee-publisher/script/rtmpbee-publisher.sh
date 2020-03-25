@@ -35,6 +35,7 @@ function shutdown {
   pid=$1
   file=$2
   pkill rtmp
+  pkill ffmpeg
   echo "Attack ended at $(date '+%d/%m/%Y %H:%M:%S')"
   return 0
 }
@@ -54,7 +55,7 @@ function set_timeout {
   if [ $isLast -eq 1 ]; then
     (sleep "$t"; shutdown "$id" "$f" || echo "Failure to kill ${id}."; return 0)
   else
-    (sleep "$t"; pkill rtmp || echo "Failure to kill ${id}.")&
+    (sleep "$t"; (pkill rtmp && pkill ffmpeg) || echo "Failure to kill ${id}.")&
   fi
   return 0
 }
@@ -69,8 +70,8 @@ for ((i=0;i<amount;i++)); do
   stream_file="${file}_${i}"
   cp "$file" "$stream_file"
   # </dev/null tells ffmpeg to not look for input
-  #nohup ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target" 2>/dev/null &
-  nohup ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target"&
+  #ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target" 2>/dev/null &
+  ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target"&
   isLast=0
   if [ $i -eq $((amount - 1)) ]; then
     isLast=1
