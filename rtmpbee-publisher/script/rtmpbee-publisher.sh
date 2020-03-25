@@ -50,6 +50,7 @@ function set_timeout {
   t=$2
   f=$3
   isLast=$4
+  PATH=$PATH:$PWD
   #echo "Will kill ${id} in ${t} seconds..."
   if [ $isLast -eq 1 ]; then
     (sleep "$t"; shutdown "$id" "$f" || echo "Failure to kill ${id}."; return 0)
@@ -64,7 +65,6 @@ echo "Attack deployed at $dt"
 
 # Dispatch.
 for ((i=0;i<amount;i++)); do
-  PATH=$PATH:$PWD
   name="${stream_name}_${i}"
   target="rtmp://${endpoint}/${app}/${name}"
   stream_file="${file}_${i}"
