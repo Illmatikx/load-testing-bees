@@ -34,7 +34,7 @@ file=$6
 function shutdown {
   pid=$1
   file=$2
-  kill -9 "$pid" && rm -f "$file" && echo "PID(${pid}) stopped." || echo "Failure to kill ${pid}."
+  pkill rtmp
   echo "Attack ended at $(date '+%d/%m/%Y %H:%M:%S')"
   return 0
 }
@@ -50,11 +50,11 @@ function set_timeout {
   t=$2
   f=$3
   isLast=$4
-  echo "Will kill ${id} in ${t} seconds..."
+  #echo "Will kill ${id} in ${t} seconds..."
   if [ $isLast -eq 1 ]; then
     (sleep "$t"; shutdown "$id" "$f" || echo "Failure to kill ${id}."; return 0)
   else
-    (sleep "$t"; kill -9 "$id" && rm -f "$f" && echo "PID(${id}) stopped." || echo "Failure to kill ${id}.")&
+    (sleep "$t"; pkill rtmp || echo "Failure to kill ${id}.")&
   fi
   return 0
 }
@@ -69,7 +69,8 @@ for ((i=0;i<amount;i++)); do
   stream_file="${file}_${i}"
   cp "$file" "$stream_file"
   # </dev/null tells ffmpeg to not look for input
-  ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target" 2>/dev/null &
+  #nohup ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target" 2>/dev/null &
+  nohup ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target"&
   isLast=0
   if [ $i -eq $((amount - 1)) ]; then
     isLast=1
