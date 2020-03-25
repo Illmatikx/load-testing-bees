@@ -34,8 +34,7 @@ file=$6
 function shutdown {
   pid=$1
   file=$2
-  pkill rtmp
-  pkill ffmpeg
+  for pids in $(ps -ef | awk '/rtmp/ {print $2}'); do kill -9 $pids; done
   echo "Attack ended at $(date '+%d/%m/%Y %H:%M:%S')"
   return 0
 }
@@ -55,7 +54,7 @@ function set_timeout {
   if [ $isLast -eq 1 ]; then
     (sleep "$t"; shutdown "$id" "$f" || echo "Failure to kill ${id}."; return 0)
   else
-    (sleep "$t"; (pkill rtmp && pkill ffmpeg) || echo "Failure to kill ${id}.")&
+    (sleep "$t";   for pids in $(ps -ef | awk '/rtmp/ {print $2}'); do kill -9 $pids; done || echo "Failure to kill ${id}.")&
   fi
   return 0
 }
@@ -65,6 +64,7 @@ echo "Attack deployed at $dt"
 
 # Dispatch.
 for ((i=0;i<amount;i++)); do
+  PATH=$PATH:$PWD
   name="${stream_name}_${i}"
   target="rtmp://${endpoint}/${app}/${name}"
   stream_file="${file}_${i}"
