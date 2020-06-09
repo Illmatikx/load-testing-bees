@@ -11,5 +11,7 @@ publishers=10
 duration=60
 #authorization token
 export TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicHJqIjoiSm9obiBEb2UiLCJ1c3IiOiJMQUxBTEEifQ.Ya3itUC81652DpzXpcNf6DryygSjrFHeCILfrmSPCyo'
+#path for ffmpeg
+PATH=$PATH:$PWD
 ###############################
 nohup ./rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file&

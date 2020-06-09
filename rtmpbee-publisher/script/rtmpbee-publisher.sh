@@ -48,7 +48,6 @@ function set_timeout {
   t=$2
   f=$3
   isLast=$4
-  PATH=$PATH:$PWD
   #echo "Will kill ${id} in ${t} seconds..."
   if [ $isLast -eq 1 ]; then
     (sleep "$t"; shutdown "$id" "$f" || echo "Failure to kill ${id}."; return 0)
