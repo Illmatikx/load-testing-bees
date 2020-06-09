@@ -20,11 +20,9 @@
 #===================================================================================
 set -e
 endpoint=$1
-app=$2
-stream_name=$3
-amount=$4
-timeout=$5
-file=$6
+amount=$2
+timeout=$3
+file=$4
 
 #=== FUNCTION ================================================================
 # NAME: shutdown
@@ -55,7 +53,7 @@ function set_timeout {
   if [ $isLast -eq 1 ]; then
     (sleep "$t"; shutdown "$id" "$f" || echo "Failure to kill ${id}."; return 0)
   else
-    (sleep "$t";   for pids in $(ps -ef | awk '/rtmp/ {print $2}'); do kill -9 $pids; done || echo "Failure to kill ${id}.")&
+    (sleep "$t";   for pids in $(ps -ef | awk '/http/ {print $2}'); do kill -9 $pids; done || echo "Failure to kill ${id}.")&
   fi
   return 0
 }
@@ -65,9 +63,10 @@ echo "Attack deployed at $dt"
 
 # Dispatch.
 for ((i=0;i<amount;i++)); do
-  name="${stream_name}_${i}"
-  target="rtmp://${endpoint}/${app}/${name}"
+  target=$(curl -s -H "Authorization: $TOKEN" -H "Content-Type: application/json" -X POST $endpoint| jq '.rtmpLink')
+  target=$(sed -e 's/^"//' -e 's/"$//' <<<"$target") 
   stream_file="${file}_${i}"
+  #for every thread own file copy
   cp "$file" "$stream_file"
   # </dev/null tells ffmpeg to not look for input
   #ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target" 2>/dev/null &
@@ -77,7 +76,7 @@ for ((i=0;i<amount;i++)); do
     isLast=1
   fi
   pid=$!
-  echo "Dispatching Bee $i($stream_file) at $target, PID(${pid})..."
+  echo "Dispatching Bee at $target, PID(${pid})..."
   set_timeout "$pid" "$timeout" "$stream_file" $isLast
   sleep 0.2
 done
