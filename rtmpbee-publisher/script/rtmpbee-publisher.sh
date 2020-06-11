@@ -23,6 +23,7 @@ endpoint=$1
 amount=$2
 timeout=$3
 file=$4
+pause=$5
 
 #=== FUNCTION ================================================================
 # NAME: shutdown
@@ -77,6 +78,6 @@ for ((i=0;i<amount;i++)); do
   pid=$!
   echo "Dispatching Bee at $target, PID(${pid})..."
   set_timeout "$pid" "$timeout" "$stream_file" $isLast
-  sleep 0.2
+  sleep $pause
 done
 

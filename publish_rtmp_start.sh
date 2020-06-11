@@ -9,9 +9,7 @@ stream_file='./media_files/example.flv'
 publishers=10
 #test duration
 duration=60
-#authorization token
-export TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwicHJqIjoiSm9obiBEb2UiLCJ1c3IiOiJMQUxBTEEifQ.Ya3itUC81652DpzXpcNf6DryygSjrFHeCILfrmSPCyo'
-#path for ffmpeg
-PATH=$PATH:$PWD
+#pause between starting new publishers
+pause=30
 ###############################
-nohup ./rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file&
+nohup ./rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file $pause&
