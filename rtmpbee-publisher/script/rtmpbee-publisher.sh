@@ -65,6 +65,7 @@ echo "Attack deployed at $dt"
 for ((i=0;i<amount;i++)); do
   target=$(curl -s -H "Authorization: $TOKEN" -H "Content-Type: application/json" -X POST $endpoint| jq '.rtmpLink')
   target=$(sed -e 's/^"//' -e 's/"$//' <<<"$target") 
+  echo $target|cut -f5 -d"/" > /home/admin/jmeter_kit/feeds/uuids.txt
   stream_file="${file}_${i}"
   #for every thread own file copy
   cp "$file" "$stream_file"
