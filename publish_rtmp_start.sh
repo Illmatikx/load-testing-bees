@@ -11,8 +11,14 @@ stream_file='/home/admin/load-testing-bees/media_files/h264_1080p_30fps.mp4'
 #number of publishers
 publishers=1
 #test duration
-duration=1800
+duration=900
 #pause between starting new publishers
 pause=1
+#project_id
+project_id='4626075d_ebf7_4ffa_8292_085f652040de'
+#publisher_id
+user_id='78703dfd-887a-4d37-b74c-3d1ce3ada302'
+#session_id
+session_id='fc94fd45-8aba-421a-94f9-6624a3dcf760'
 ###############################
-nohup $HOME/load-testing-bees/rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file $pause&
+nohup $HOME/load-testing-bees/rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file $pause $session_id $project_id $user_id&

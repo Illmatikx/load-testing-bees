@@ -24,6 +24,9 @@ amount=$2
 timeout=$3
 file=$4
 pause=$5
+session_id=$6
+project_id=$7
+user_id=$8
 
 #=== FUNCTION ================================================================
 # NAME: shutdown
@@ -63,7 +66,7 @@ echo "Attack deployed at $dt"
 
 # Dispatch.
 for ((i=0;i<amount;i++)); do
-  target=$(curl -s -H "Authorization: $TOKEN" -H "Content-Type: application/json" -X POST $endpoint| jq '.rtmpLink')
+  target=$(curl -s -d '{"project_id":"$project_id", "session_id":"$session_id", "user_id":"$user_id", "with_backup":false}' -X POST -H "Authorization: $TOKEN" -H "Content-Type: application/json" -X POST $endpoint| jq '.rtmp_link')
   target=$(sed -e 's/^"//' -e 's/"$//' <<<"$target") 
   echo $target|cut -f5 -d"/" > /home/admin/jmeter_kit/feeds/uuids.txt
   stream_file="${file}_${i}"
