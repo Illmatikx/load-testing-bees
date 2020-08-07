@@ -25,8 +25,6 @@ timeout=$3
 file=$4
 pause=$5
 session_id=$6
-project_id=$7
-user_id=$8
 
 #=== FUNCTION ================================================================
 # NAME: shutdown
@@ -66,11 +64,12 @@ echo "Attack deployed at $dt"
 
 # Dispatch.
 for ((i=0;i<amount;i++)); do
-  target=$(curl -s -d '{"project_id":"$project_id", "session_id":"$session_id", "user_id":"$user_id", "with_backup":false}' -X POST -H "Authorization: $TOKEN" -H "Content-Type: application/json" -X POST $endpoint| jq '.rtmp_link')
+  target=$(curl -s -H "accept: */*" -X GET $endpoint?sessionId=$session_id| jq '.main.rtmp.rtmp_link')
   target=$(sed -e 's/^"//' -e 's/"$//' <<<"$target") 
+  echo $target
   echo $target|cut -f5 -d"/" > /home/admin/jmeter_kit/feeds/uuids.txt
   stream_file="${file}_${i}"
-  #for every thread own file copy
+  for every thread own file copy
   cp "$file" "$stream_file"
   # </dev/null tells ffmpeg to not look for input
   #ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target" 2>/dev/null &
