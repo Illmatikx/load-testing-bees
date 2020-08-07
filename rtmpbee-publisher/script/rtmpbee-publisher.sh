@@ -69,7 +69,7 @@ for ((i=0;i<amount;i++)); do
   echo $target
   echo $target|cut -f5 -d"/" > /home/admin/jmeter_kit/feeds/uuids.txt
   stream_file="${file}_${i}"
-  for every thread own file copy
+  #for every thread own file copy
   cp "$file" "$stream_file"
   # </dev/null tells ffmpeg to not look for input
   #ffmpeg -re -stream_loop -1 -fflags +genpts -i "$stream_file" -c copy -f flv "$target" 2>/dev/null &
