@@ -25,7 +25,6 @@ timeout=$3
 file=$4
 pause=$5
 session_id=$6
-project_id=$7
 
 #=== FUNCTION ================================================================
 # NAME: shutdown
@@ -65,7 +64,7 @@ echo "Attack deployed at $dt"
 
 # Dispatch.
 for ((i=0;i<amount;i++)); do
-  target=$(curl -X POST "$endpoint/$session_id" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"external_project_id\": \"test\", \"external_session_id\": \"test\", \"project_id\": \"$project_id\", \"with_backup\": false}"| jq '.main.rtmp_link')
+  target=$(curl -X GET "$endpoint/$session_id" -H "accept: */*"| jq '.main.rtmp.rtmp_link')
   target=$(sed -e 's/^"//' -e 's/"$//' <<<"$target") 
   echo $target
   echo $target|cut -f5 -d"/" > /home/admin/jmeter_kit/feeds/uuids.txt

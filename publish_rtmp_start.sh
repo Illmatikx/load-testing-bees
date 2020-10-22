@@ -16,8 +16,6 @@ duration=600
 #pause between starting new publishers
 pause=1
 #session_id
-session_id="16ff724b-cf8a-45db-9e63-130adcd1341d"
-#project_id
-project_id="4626075d-ebf7-4ffa-8292-085f652040de"
+session_id="9e725e26-7bbe-41b9-9a6b-79e6792c64a1"
 ###############################
-nohup $HOME/load-testing-bees/rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file $pause $session_id $project_id&
+nohup $HOME/load-testing-bees/rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file $pause $session_id&
