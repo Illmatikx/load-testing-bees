@@ -2,7 +2,7 @@
 
 #thread groups configuration
 #target endpoint
-endpoint='https://perf-dev.stagepro.io/api/v1/video/streams'
+endpoint='https://perf-dev.stagepro.io/api/v1/video/sessions'
 #example file for streaming
 #stream_file='home/admin/load-testing-bees/media_files/vp6f_288p_25fps.flv'
 stream_file='/home/admin/load-testing-bees/media_files/h264_1080p_30fps.mp4'
@@ -17,5 +17,7 @@ duration=600
 pause=1
 #session_id
 session_id="16ff724b-cf8a-45db-9e63-130adcd1341d"
+#project_id
+project_id="4626075d-ebf7-4ffa-8292-085f652040de"
 ###############################
-nohup $HOME/load-testing-bees/rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file $pause $session_id&
+nohup $HOME/load-testing-bees/rtmpbee-publisher/script/rtmpbee-publisher.sh $endpoint $publishers $duration $stream_file $pause $session_id $project_id&
